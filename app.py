@@ -4,7 +4,7 @@ from fastapi.templating import Jinja2Templates
 import numpy as np
 import pandas as pd
 import joblib
-from tensorflow.keras.models import load_model
+from tensorflow.keras.models import load_model # type: ignore
 import uvicorn
 
 # Initialize FastAPI app
@@ -40,7 +40,7 @@ def predict(
     slope: int = Form(...)  # ST slope
 ):
 
-    # 1️⃣ Convert form input to DataFrame
+    # Convert form input to DataFrame
     df = pd.DataFrame([{
         "age": age,
         "sex": sex,
@@ -55,7 +55,7 @@ def predict(
         "ST slope": slope
     }])
 
-    # 2️⃣ Add interaction features (must match training!)
+    # Add interaction features (must match training!)
     df['age_resting_bp'] = df['age'] * df['resting bp s']
     df['age_oldpeak'] = df['age'] * df['oldpeak']
     df['cholesterol_max_heart_rate'] = df['cholesterol'] * df['max heart rate']
@@ -79,16 +79,18 @@ def predict(
     df['resting_ecg_st_slope'] = df['resting ecg'] * df['ST slope']
     df['exercise_angina_st_slope'] = df['exercise angina'] * df['ST slope']
 
-    # 3️⃣ Scale and apply PCA
+    # Scale and apply PCA
     features_scaled = scaler.transform(df)
     features_pca = pca.transform(features_scaled)
 
-    # 4️⃣ Reshape for 1D CNN
+    # Reshape for 1D CNN
     features_cnn = features_pca.reshape(features_pca.shape[0], features_pca.shape[1], 1)
 
-    # 5️⃣ Predict
+    # Predict
     prediction = model.predict(features_cnn)[0][0]
     result = "Heart Disease Detected " if prediction > 0.5 else "No Heart Disease "
 
-    # 6️⃣ Return result to HTML
+    # Return result to HTML
     return templates.TemplateResponse("result.html", {"request": request, "result": result})
+
+
