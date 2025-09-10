@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Heart Disease Prediction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            margin: 0;
+            padding: 0;
+        }
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to top for better UX */
+            min-height: 100vh;
+            padding: 40px 20px; /* Add padding for small screens */
+        }
+        .container {
+            background-color: #ffffffdd;
+            padding: 30px 30px 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            max-width: 600px;
+            width: 100%;
+            overflow: auto; /* Allow scroll if container too tall */
+        }
+        h1 {
+            text-align: center;
+            color: #d32f2f;
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        button {
+            background-color: #d32f2f;
+            color: #fff;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            margin-top: 25px;
+            border-radius: 15px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background-color: #b71c1c;
+        }
+
+        /* Mobile responsiveness */
+        @media screen and (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            button {
+                font-size: 16px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <h1>Heart Disease Prediction</h1>
+            <form action="/predict" method="post">
+                <label>Age (years)</label>
+                <input type="number" name="age" required>
+
+                <label>Sex (1=Male, 0=Female)</label>
+                <select name="sex" required>
+                    <option value="1">Male</option>
+                    <option value="0">Female</option>
+                </select>
+
+                <label>Chest Pain Type (1-4)</label>
+                <input type="number" name="cp" min="1" max="4" required>
+
+                <label>Resting Blood Pressure (mm Hg)</label>
+                <input type="number" name="trestbps" required>
+
+                <label>Cholesterol (mg/dl)</label>
+                <input type="number" name="chol" required>
+
+                <label>Fasting Blood Sugar (1=True, 0=False)</label>
+                <select name="fbs" required>
+                    <option value="1">True</option>
+                    <option value="0">False</option>
+                </select>
+
+                <label>Resting ECG (0-2)</label>
+                <input type="number" name="restecg" min="0" max="2" required>
+
+                <label>Max Heart Rate Achieved</label>
+                <input type="number" name="thalach" required>
+
+                <label>Exercise Induced Angina (1=Yes, 0=No)</label>
+                <select name="exang" required>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+
+                <label>Oldpeak (ST depression)</label>
+                <input type="number" step="0.1" name="oldpeak" required>
+
+                <label>ST Slope (0=Upsloping, 1=Flat, 2=Downsloping)</label>
+                <input type="number" name="slope" min="0" max="2" required>
+
+                <button type="submit">Predict</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
