@@ -3,82 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <title>Prediction Result</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-        }
         body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
-            margin: 0;
-            padding: 0;
-        }
-        .wrapper {
+            font-family: Arial, sans-serif;
+            background-color: #f2f6fc;
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Align to top */
-            min-height: 100vh;
-            padding: 40px 20px; /* Padding for small screens */
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
         .container {
-            background-color: #ffffffdd;
-            padding: 30px 30px 40px 30px;
-            border-radius: 20px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-            max-width: 500px;
-            width: 100%;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            width: 400px;
             text-align: center;
-            overflow: auto;
         }
         h1 {
-            color: #d32f2f;
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 25px 0;
+            color: #ff4d4d;
         }
         a {
             display: inline-block;
-            padding: 15px 25px;
-            background-color: #d32f2f;
-            color: #fff;
-            border-radius: 15px;
+            margin-top: 20px;
             text-decoration: none;
-            font-size: 18px;
-            transition: background 0.3s ease;
+            color: white;
+            background-color: #ff4d4d;
+            padding: 10px 20px;
+            border-radius: 5px;
         }
         a:hover {
-            background-color: #b71c1c;
-        }
-
-        /* Mobile responsiveness */
-        @media screen and (max-width: 480px) {
-            .container {
-                padding: 20px;
-            }
-            h1 {
-                font-size: 24px;
-            }
-            p {
-                font-size: 20px;
-            }
-            a {
-                font-size: 16px;
-                padding: 12px 20px;
-            }
+            background-color: #ff1a1a;
         }
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <div class="container">
-            <h1>Prediction Result</h1>
-            <p>{{ result }}</p>
-            <a href="/">Predict Again</a>
-        </div>
-    </div>
+<div class="container">
+    <h1>Prediction Result</h1>
+    <p style="font-size: 20px; font-weight: bold;">{{ result }}</p>
+    <a href="/">Predict Again</a>
+</div>
 </body>
 </html>
