@@ -6,15 +6,15 @@ import pandas as pd
 import joblib
 from tensorflow.keras.models import load_model
 import uvicorn
-import os
+import os  # Render-এর PORT environment variable-এর জন্য
 
-# Initialize FastAPI app
+# FastAPI app initialize
 app = FastAPI()
 
-# Load templates folder
+# Load HTML templates
 templates = Jinja2Templates(directory="templates")
 
-# Load saved CNN model, scaler, and PCA
+# Load model, scaler, and PCA
 model = load_model("models/heart_cnn_model.h5")
 scaler = joblib.load("models/scaler.pkl")
 pca = joblib.load("models/pca.pkl")
@@ -30,18 +30,16 @@ def predict(
     request: Request,
     age: float = Form(...),
     sex: int = Form(...),
-    cp: int = Form(...),  # chest pain type
-    trestbps: float = Form(...),  # resting bp s
-    chol: float = Form(...),  # cholesterol
-    fbs: int = Form(...),  # fasting blood sugar
-    restecg: int = Form(...),  # resting ecg
-    thalach: float = Form(...),  # max heart rate
-    exang: int = Form(...),  # exercise angina
+    cp: int = Form(...),
+    trestbps: float = Form(...),
+    chol: float = Form(...),
+    fbs: int = Form(...),
+    restecg: int = Form(...),
+    thalach: float = Form(...),
+    exang: int = Form(...),
     oldpeak: float = Form(...),
-    slope: int = Form(...)  # ST slope
+    slope: int = Form(...)
 ):
-
-    # Convert form input to DataFrame
     df = pd.DataFrame([{
         "age": age,
         "sex": sex,
@@ -56,7 +54,7 @@ def predict(
         "ST slope": slope
     }])
 
-    # Add interaction features (must match training!)
+    # Interaction features (যেমন train dataset-এ আছে)
     df['age_resting_bp'] = df['age'] * df['resting bp s']
     df['age_oldpeak'] = df['age'] * df['oldpeak']
     df['cholesterol_max_heart_rate'] = df['cholesterol'] * df['max heart rate']
@@ -80,22 +78,18 @@ def predict(
     df['resting_ecg_st_slope'] = df['resting ecg'] * df['ST slope']
     df['exercise_angina_st_slope'] = df['exercise angina'] * df['ST slope']
 
-    # Scale and apply PCA
+    # Scale + PCA
     features_scaled = scaler.transform(df)
     features_pca = pca.transform(features_scaled)
-
-    # Reshape for 1D CNN
     features_cnn = features_pca.reshape(features_pca.shape[0], features_pca.shape[1], 1)
 
     # Predict
     prediction = model.predict(features_cnn)[0][0]
     result = "Heart Disease Detected" if prediction > 0.5 else "No Heart Disease"
 
-    # Return result to HTML
     return templates.TemplateResponse("result.html", {"request": request, "result": result})
 
-
-# Run the app using the Render PORT
+# Run app on Render
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))
+    port = int(os.environ.get("PORT", 8000))  # Render auto sets PORT
     uvicorn.run(app, host="0.0.0.0", port=port)
