@@ -4,8 +4,9 @@ from fastapi.templating import Jinja2Templates
 import numpy as np
 import pandas as pd
 import joblib
-from tensorflow.keras.models import load_model # type: ignore
+from tensorflow.keras.models import load_model
 import uvicorn
+import os
 
 # Initialize FastAPI app
 app = FastAPI()
@@ -88,9 +89,13 @@ def predict(
 
     # Predict
     prediction = model.predict(features_cnn)[0][0]
-    result = "Heart Disease Detected " if prediction > 0.5 else "No Heart Disease "
+    result = "Heart Disease Detected" if prediction > 0.5 else "No Heart Disease"
 
     # Return result to HTML
     return templates.TemplateResponse("result.html", {"request": request, "result": result})
 
 
+# Run the app using the Render PORT
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
